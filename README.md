@@ -4,7 +4,14 @@
 
 Since I currently only own a Macbook machine and Vinacles seem to use a Windows machines, I have decided to use Docker to
 run the application. This way I can ensure that the application runs on any machine.
-Also, I used the AdventureWorksDW2022 database instead of the provided AdventureWorks2022 database since the latter did not include the required tables. This is why some names may differ from the ones provided in the assignment.
+> Note: The AdventureWorksDW2022 database was used instead of AdventureWorks2022, as it contains the required tables for this assignment. Some entity names may differ slightly from the provided specifications.
+
+## Architecture
+
+This project uses Docker Compose to run:
+- **MS SQL Server** with the restored AdventureWorksDW2022 database
+- **Azure Data API Builder (DAB)** for exposing REST and GraphQL endpoints
+- **Project setup** for running the setup script to download and restore the sample data in an architecture-independent manner
 
 ## Requirements
 
