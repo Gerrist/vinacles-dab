@@ -13,6 +13,8 @@ This project uses Docker Compose to run:
 - **Azure Data API Builder (DAB)** for exposing REST and GraphQL endpoints
 - **Project setup** for running the setup script to download and restore the sample data in an architecture-independent manner
 
+An example environment file is provided in the `.env.example` file. Before running the project, copy the `.env.example` file to `.env` and alter the values as needed.
+
 ## Requirements
 
 - [x] GraphQL: http://localhost:5000/graphql/
