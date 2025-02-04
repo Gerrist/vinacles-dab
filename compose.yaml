@@ -1,0 +1,60 @@
+﻿name: vinacles
+
+networks:
+  vinacles:
+
+services:
+  db:
+    container_name: sql1
+    image: mcr.microsoft.com/mssql/server:2022-CU13-ubuntu-22.04
+    env_file:
+      - .env
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./docker-data/db:/var/opt/mssql
+    healthcheck:
+      test: [ "CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\"" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vinacles
+
+  dab:
+    container_name: dab
+    image: mcr.microsoft.com/azure-databases/data-api-builder:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./dab-config.json:/App/dab-config.json
+      - ./docker/ddl.sql:/App/ddl.sql
+      - ./docker-data/dab/.aspnet:/root/.aspnet
+    ports:
+      - "5000:5000" # REST API bereikbaar op http://localhost:5000/api
+    env_file:
+      - .env
+    networks:
+      - vinacles
+
+  setup:
+    container_name: setup
+    pull_policy: always
+    build:
+      context: ..
+      dockerfile: ./docker/setup.Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./docker/setup.sh/:/app/setup.sh
+      - ./docker/ddl.sql:/usr/src/app/ddl.sql
+      - ./docker-data/db:/var/opt/mssql
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - setup
+    entrypoint: [ "sh", "/app/setup.sh" ]
+    networks:
+      - vinacles
