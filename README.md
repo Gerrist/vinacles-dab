@@ -30,7 +30,6 @@ An example environment file is provided in the `.env.example` file. Before runni
 1. Clone the repository
 2. Ensure Docker Compose is installed
 3. Run `docker compose up setup` to download en restore sample data. This step is required only once.
-   once.
 4. Run `docker compose up` to start the required containers for DAB.
 5. Access GraphQL via http://localhost:5000/graphql/ or Swagger via http://localhost:5000/swagger/index.html
 
